@@ -1,0 +1,123 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Drag&Drop</title>
+    <style>
+        section {
+            border:3px solid lightgreen;
+            border-radius: 20px;
+
+        }
+
+        #mainwrapper {
+            display: flex;
+            flex-direction: column;
+            width: 80%;
+            margin: 20px auto;
+            padding: 10px;
+            box-shadow:lightblue 10px 10px 80px inset;
+        }
+
+        #mainwrapper>section {
+
+            margin: 10px;
+            height: 120px;
+        }
+
+        #top,
+        #bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+
+        }
+
+        img {
+            width: 120px;
+            height: 100px;
+            margin: 30px;
+            border: 1px solid greenyellow;
+           
+        }
+
+        img:hover {
+            transform: rotate(360deg);
+            transform: scale(2);
+          
+        }
+    </style>
+    <script>
+        window.addEventListener("load", function () {
+
+            allImgs = document.getElementsByTagName("img");
+            for (var i = 0; i < allImgs.length; i++) {
+
+                allImgs[i].addEventListener("dragstart", function (e) {
+                    e.dataTransfer.setData("myimg", e.target.outerHTML);
+                }); 
+
+                allImgs[i].addEventListener("dragend", function (e) {
+                    e.preventDefault();
+                    e.target.style.display = "none";
+                    var imgsInTop = document.querySelectorAll("#top img");
+				var count = 0;
+				for (var i = 0; i < imgsInTop.length; i++) {
+					if (imgsInTop[i].style.display == "none") {
+						count++;
+					}
+				}
+				if (count == imgsInTop.length) document.getElementById("top").innerHTML += "<h2>Empty</h2>";
+                }); 
+            }
+
+            topSection = document.getElementById("top");
+            topSection.addEventListener("dragleave", function (e) {
+                e.preventDefault();
+                
+            }); 
+
+            bottomSection = document.getElementById("bottom");
+            bottomSection.addEventListener("dragenter", function (e) {
+                e.preventDefault();
+                bottomSection.style.backgroundColor = "#78efd2";
+            }); 
+
+            bottomSection.addEventListener("dragover", function (e) {
+                e.preventDefault();
+            }); 
+
+            bottomSection.addEventListener("drop", function (e) {
+                e.preventDefault();
+                bottomSection.innerHTML += e.dataTransfer.getData("myimg");
+            }); 
+        }); 
+    </script>
+
+</head>
+
+<body>
+    <section id="mainwrapper">
+
+        <section id="top">
+            <img src="car.jpg">
+            <img src="car.jpg">
+            <img src="car.jpg">
+            <img src="car.jpg">
+            <img src="car.jpg">
+            <img src="car.jpg">
+
+        </section>
+        <section id="bottom"></section>
+
+
+
+
+    </section>
+
+
+
+</body>
+
+</html>
